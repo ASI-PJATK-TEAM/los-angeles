@@ -72,5 +72,5 @@ model_encoder:
   filepath: data/06_models/model_encoder.pkl
 
 crime_model:
-  type: pickle.PickleDataSet
+  type: pickle.PickleDataset
   filepath: data/06_models/crime_model.pkl
