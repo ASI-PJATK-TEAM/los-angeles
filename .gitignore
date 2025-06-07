@@ -36,7 +36,6 @@ conf/base/*.env
 # Kedro artifacts
 catalog.yml
 nodes/
-__pycache__/
 
 # IPython history
 .ipython/
@@ -45,6 +44,11 @@ __pycache__/
 .DS_Store
 .idea/
 .vscode/
+misc.xml
+los-angeles.iml
 
 # Jupyter notebooks output
 *.nbconvert.ipynb
+
+# Kedro viz
+.viz/
