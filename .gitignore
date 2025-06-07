@@ -1,0 +1,50 @@
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+.env*/  # dla plików .env, np. .env.dev, .env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Logs
+*.log
+logs/
+
+# Data folders (raw/interim/processed)
+data/01_raw/
+data/02_intermediate/
+data/03_primary/
+data/04_feature/
+data/05_model_input/
+data/06_models/
+data/07_model_output/
+data/08_reporting/
+
+# Local config
+conf/local/
+conf/base/credentials.yml
+conf/base/credentials/
+conf/base/*.env
+
+# Kedro artifacts
+catalog.yml
+nodes/
+__pycache__/
+
+# IPython history
+.ipython/
+
+# MacOS & IDEs
+.DS_Store
+.idea/
+.vscode/
+
+# Jupyter notebooks output
+*.nbconvert.ipynb
