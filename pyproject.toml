@@ -40,3 +40,6 @@ attr = "los_angeles.__version__"
 [tool.setuptools.packages.find]
 where = [ "src",]
 namespaces = false
+
+[tool.kedro_telemetry]
+project_id = "8c227a5c32284251912af652fa71ab6b"

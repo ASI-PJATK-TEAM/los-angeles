@@ -1,68 +1,44 @@
 import pandas as pd
 
+def clean_crime_data(df: pd.DataFrame) -> pd.DataFrame:
+    df = df[[
+        "DR_NO", "DATE OCC", "TIME OCC", "AREA NAME", "Crm Cd Desc", "LAT", "LON"
+    ]].copy()
 
-def _is_true(x: pd.Series) -> pd.Series:
-    return x == "t"
+    df["date"] = pd.to_datetime(df["DATE OCC"], errors="coerce")
 
+    df["hour"] = df["TIME OCC"].astype(str).str.zfill(4).str[:2].astype(int)
 
-def _parse_percentage(x: pd.Series) -> pd.Series:
-    x = x.str.replace("%", "")
-    x = x.astype(float) / 100
-    return x
+    df.rename(columns={
+        "DR_NO": "event_id",
+        "AREA NAME": "area",
+        "Crm Cd Desc": "crime_type",
+        "LAT": "lat",
+        "LON": "lon"
+    }, inplace=True)
 
+    df.dropna(subset=["date", "lat", "lon"], inplace=True)
 
-def _parse_money(x: pd.Series) -> pd.Series:
-    x = x.str.replace("$", "").str.replace(",", "")
-    x = x.astype(float)
-    return x
+    df = df.sort_values("date").reset_index(drop=True)
 
+    return df[["event_id", "date", "hour", "area", "crime_type", "lat", "lon"]]
 
-def preprocess_companies(companies: pd.DataFrame) -> pd.DataFrame:
-    """Preprocesses the data for companies.
+def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
 
-    Args:
-        companies: Raw data.
-    Returns:
-        Preprocessed data, with `company_rating` converted to a float and
-        `iata_approved` converted to boolean.
-    """
-    companies["iata_approved"] = _is_true(companies["iata_approved"])
-    companies["company_rating"] = _parse_percentage(companies["company_rating"])
-    return companies
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
 
+    df["weekday"] = df["date"].dt.dayofweek  # pon=0, niedz=6
+    df["is_weekend"] = df["weekday"].isin([5, 6])
 
-def preprocess_shuttles(shuttles: pd.DataFrame) -> pd.DataFrame:
-    """Preprocesses the data for shuttles.
+    df["month"] = df["date"].dt.month
+    df["season"] = df["month"].map({
+        12: "winter", 1: "winter", 2: "winter",
+        3: "spring", 4: "spring", 5: "spring",
+        6: "summer", 7: "summer", 8: "summer",
+        9: "fall", 10: "fall", 11: "fall"
+    })
 
-    Args:
-        shuttles: Raw data.
-    Returns:
-        Preprocessed data, with `price` converted to a float and `d_check_complete`,
-        `moon_clearance_complete` converted to boolean.
-    """
-    shuttles["d_check_complete"] = _is_true(shuttles["d_check_complete"])
-    shuttles["moon_clearance_complete"] = _is_true(shuttles["moon_clearance_complete"])
-    shuttles["price"] = _parse_money(shuttles["price"])
-    return shuttles
+    df["hour_bin"] = pd.cut(df["hour"], bins=[0, 6, 12, 18, 24], labels=["night", "morning", "afternoon", "evening"], right=False)
 
-
-def create_model_input_table(
-    shuttles: pd.DataFrame, companies: pd.DataFrame, reviews: pd.DataFrame
-) -> pd.DataFrame:
-    """Combines all data to create a model input table.
-
-    Args:
-        shuttles: Preprocessed data for shuttles.
-        companies: Preprocessed data for companies.
-        reviews: Raw data for reviews.
-    Returns:
-        Model input table.
-
-    """
-    rated_shuttles = shuttles.merge(reviews, left_on="id", right_on="shuttle_id")
-    rated_shuttles = rated_shuttles.drop("id", axis=1)
-    model_input_table = rated_shuttles.merge(
-        companies, left_on="company_id", right_on="id"
-    )
-    model_input_table = model_input_table.dropna()
-    return model_input_table
+    return df
