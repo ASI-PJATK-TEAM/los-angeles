@@ -28,7 +28,7 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
 
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
 
-    df["weekday"] = df["date"].dt.dayofweek  # pon=0, niedz=6
+    df["weekday"] = df["date"].dt.dayofweek  # Monday=0, Sunday=6
     df["is_weekend"] = df["weekday"].isin([5, 6])
 
     df["month"] = df["date"].dt.month
@@ -42,3 +42,12 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     df["hour_bin"] = pd.cut(df["hour"], bins=[0, 6, 12, 18, 24], labels=["night", "morning", "afternoon", "evening"], right=False)
 
     return df
+
+def aggregate_crime(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+
+    agg_df = df.groupby(
+        ["area", "weekday", "hour_bin", "crime_type"]
+    ).size().reset_index(name="crime_count")
+
+    return agg_df
