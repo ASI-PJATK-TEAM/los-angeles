@@ -18,10 +18,13 @@ def prepare_model_input(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, OneH
     return encoded_df, y, encoder
 
 
-def train_model(X: pd.DataFrame, y: pd.Series) -> Ridge:
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+def train_model(X: pd.DataFrame, y: pd.Series, model_options: dict) -> Ridge:
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y,
+        test_size=model_options["test_size"],
+        random_state=model_options["random_state"])
 
-    model = Ridge(alpha=1.0)
+    model = Ridge(alpha=model_options["alpha"])
     model.fit(X_train, y_train)
 
     print(f"Train R² score: {model.score(X_train, y_train):.3f}")
