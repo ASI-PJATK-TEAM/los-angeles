@@ -5,15 +5,15 @@ from sklearn.model_selection import train_test_split
 
 def prepare_model_input(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, OneHotEncoder]:
     df = df.copy()
-
-    categorical_cols = ["area", "crime_type", "hour_bin", "season", "weekday"]
+    print("PREP INPUT COLS:", df.columns)
+    categorical_cols = ["area", "hour_bin", "weekday", "season"]
     df = df.dropna(subset=categorical_cols)
 
     encoder = OneHotEncoder(sparse_output=False, handle_unknown="ignore")
     encoded = encoder.fit_transform(df[categorical_cols])
     encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out(categorical_cols))
 
-    y = pd.Series(1, index=df.index, name="crime_count")
+    y = df["crime_count"]
 
     return encoded_df, y, encoder
 

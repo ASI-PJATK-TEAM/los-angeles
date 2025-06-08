@@ -3,3 +3,6 @@ kedro-datasets[pickle]
 pandas
 scikit-learn
 streamlit
+fastapi
+matplotlib
+uvicorn[standard]
