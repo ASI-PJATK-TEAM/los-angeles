@@ -17,7 +17,8 @@ __pycache__/
 *.log
 logs/
 
-# Ignore CSV files in all folders except raw
+# Ignore CSV files in all folders
+kedro/data/01_raw/*.csv
 kedro/data/02_intermediate/*.csv
 kedro/data/03_features/*.csv
 kedro/data/04_aggregated/*.csv
@@ -32,6 +33,9 @@ kedro/data/08_reporting/*.csv
 
 # Explicitly allow the raw input file to be tracked
 !kedro/data/01_raw/crime_raw.csv
+
+# Ignore kaggle api key
+kaggle.json
 
 # Local config
 conf/local/
