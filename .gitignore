@@ -31,9 +31,6 @@ kedro/data/08_reporting/*.csv
 *.pkl
 *.png
 
-# Explicitly allow the raw input file to be tracked
-!kedro/data/01_raw/crime_raw.csv
-
 # Ignore kaggle api key
 kaggle.json
 
