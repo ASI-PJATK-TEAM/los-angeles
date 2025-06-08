@@ -40,16 +40,38 @@ pip install -r requirements.txt
 ```
 
 ## Download dataset with script
+Run the following command from the root of the project directory:
 ```
-python kedro/src/scripts/download_data.py
+python scripts/download_data.py
 ```
 
 ## How to run your Kedro pipeline
-
-You can run your Kedro project with:
+Move to the root of your Kedro project directory:
+```
+cd kedro
+```
+And run the project with:
 
 ```
 kedro run
+```
+
+## How to run the FastAPI server
+Move to the root of your backend project directory:
+```
+cd backend
+```
+And run the FastAPI server with:
+
+```
+uvicorn main:app --reload
+```
+
+## Swagger UI
+To access the Swagger UI for your FastAPI application, open your web browser and navigate to:
+
+```
+http://127.0.0.1:8000/docs
 ```
 
 ## To update the project dependencies
