@@ -17,7 +17,19 @@ In order to get the best out of the template:
 * Don't commit data to your repository
 * Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
 
-## How to install dependencies
+## 🔑 Kaggle API Token Setup
+
+To download the dataset:
+
+1. Visit https://www.kaggle.com/account
+2. Scroll to "API" section and click "Create New Token"
+3. Place the downloaded `kaggle.json` file in the `.kaggle/` directory at the root of the project
+4. Make sure permissions are secure (optional but recommended):
+    ```bash
+   chmod 600 .kaggle/kaggle.json
+    ```
+   
+## Install dependencies
 
 Declare any dependencies in `requirements.txt` for `pip` installation.
 
@@ -27,6 +39,11 @@ To install them, run:
 pip install -r requirements.txt
 ```
 
+## Download dataset with script
+```
+python kedro/src/scripts/download_data.py
+```
+
 ## How to run your Kedro pipeline
 
 You can run your Kedro project with:
@@ -34,6 +51,35 @@ You can run your Kedro project with:
 ```
 kedro run
 ```
+
+## To update the project dependencies
+To update the project dependencies, you can use `pip-tools` to manage your requirements. First, install `pip-tools`:
+
+```
+pip install pip-tools
+```
+
+Then, you can update the file `requirements.in` with your project dependencies. 
+This file should contain the top-level dependencies you want to include in your project, for example:
+
+```text
+kedro
+kedro-datasets[pickle]
+pandas
+scikit-learn
+streamlit
+fastapi
+matplotlib
+uvicorn[standard]
+kaggle
+```
+
+Then, you can update your `requirements.txt` file by running:
+
+```
+pip-compile requirements.in
+```
+
 
 ## How to test your Kedro project
 
@@ -45,9 +91,6 @@ pytest
 
 To configure the coverage threshold, look at the `.coveragerc` file.
 
-## Project dependencies
-
-To see and update the dependency requirements for your project use `requirements.txt`. You can install the project requirements with `pip install -r requirements.txt`.
 
 [Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
 
