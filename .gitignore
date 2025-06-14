@@ -41,7 +41,6 @@ conf/base/credentials/
 conf/base/*.env
 
 # Kedro artifacts
-catalog.yml
 nodes/
 
 # IPython history

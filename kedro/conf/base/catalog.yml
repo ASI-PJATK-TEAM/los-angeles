@@ -1,0 +1,27 @@
+crime_raw:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/crime_raw.csv
+crime_clean:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/crime_clean.csv
+crime_features:
+  type: pandas.CSVDataset
+  filepath: data/03_features/crime_features.csv
+crime_aggregated:
+  type: pandas.CSVDataset
+  filepath: data/04_aggregated/crime_aggregated.csv
+model_input_x:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/model_input_x.csv
+model_input_y:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/model_input_y.csv
+crime_model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/crime_model.pkl
+model_encoder:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model_encoder.pkl
+crime_score_distribution:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/07_reporting/crime_score_distribution.png
