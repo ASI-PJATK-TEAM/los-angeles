@@ -178,7 +178,8 @@ with col1:
         st.info("👆 Wybierz dzielnicę")
 
     if st.button("🔍 Analizuj ryzyko", disabled=not st.session_state.selected_area):
-        payload = {"area": st.session_state.selected_area, "date": picked_date.isoformat()}
+        area = AREA_NAME_MAPPING.get(st.session_state.selected_area)
+        payload = {"area": area, "date": picked_date.isoformat()}
         try:
             r = requests.post(FASTAPI_URL, json=payload, timeout=10)
             r.raise_for_status()
