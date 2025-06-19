@@ -94,7 +94,7 @@ def get_risk_description(risk_level: str) -> str:
 m = folium.Map(
     location=[34.05, -118.25],
     zoom_start=10,
-    tiles="cartodbpositron",
+    tiles="cartodb dark_matter",
     zoom_control=False,
     scrollWheelZoom=False,
     dragging=False,
