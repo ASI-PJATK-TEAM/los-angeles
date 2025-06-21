@@ -17,13 +17,13 @@ __pycache__/
 *.log
 logs/
 
-# Ignore CSV files in all folders
+# Ignore data files and models
 kedro/data/01_raw/*.csv
 kedro/data/02_intermediate/*.csv
 kedro/data/03_features/*.csv
 kedro/data/04_aggregated/*.csv
 kedro/data/05_model_input/*.csv
-kedro/data/06_models/*.csv
+kedro/data/06_models
 kedro/data/07_model_output/*.csv
 kedro/data/08_reporting/*.csv
 
