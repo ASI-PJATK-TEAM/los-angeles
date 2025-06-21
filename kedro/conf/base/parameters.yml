@@ -1,0 +1,4 @@
+model_options:
+  time_limit: 900
+  presets: "good_quality_faster_inference_only_refit"
+  verbosity: 2
