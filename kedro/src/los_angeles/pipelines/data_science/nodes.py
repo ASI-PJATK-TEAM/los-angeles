@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.linear_model import Ridge
-from sklearn.model_selection import train_test_split
+from autogluon.tabular import TabularPredictor
+import matplotlib.pyplot as plt
 
 def prepare_model_input(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, OneHotEncoder]:
     df = df.copy()
@@ -18,15 +18,38 @@ def prepare_model_input(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, OneH
     return encoded_df, y, encoder
 
 
-def train_model(X: pd.DataFrame, y: pd.Series, model_options: dict) -> Ridge:
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y,
-        test_size=model_options["test_size"],
-        random_state=model_options["random_state"])
+def train_automl_model(X: pd.DataFrame, y: pd.Series,
+                       params: dict):
+    y_series = y.iloc[:, 0].rename("crime_count")
+    train_df = pd.concat([X, y_series], axis=1)
 
-    model = Ridge(alpha=model_options["alpha"])
-    model.fit(X_train, y_train)
+    predictor = TabularPredictor(
+        label="crime_count",
+        path="data/06_models/crime_model"
+    ).fit(
+        train_df,
+        time_limit=params["time_limit"],
+        presets=params["presets"],
+        verbosity=params["verbosity"],
+    )
 
-    print(f"Train R² score: {model.score(X_train, y_train):.3f}")
-    print(f"Test R² score: {model.score(X_test, y_test):.3f}")
-    return model
+    print("\n📊 Leaderboard:")
+    leaderboard_df = predictor.leaderboard(silent=False)
+
+    print("\n📄 Fit Summary:")
+    predictor.fit_summary()
+
+    print("\n🔥 Feature Importance:")
+    fi_df = predictor.feature_importance(train_df)
+    fi_df.head(20).plot(kind="barh", y="importance", figsize=(8, 10), title="Top 20 Feature Importances")
+    plt.gca().invert_yaxis()
+    plt.xlabel("Importance (increase in RMSE when shuffled)")
+    plt.ylabel("Feature")
+    plt.tight_layout()
+    plt.savefig("data/07_reporting/feature_importance.png")
+    plt.close()
+
+    leaderboard_df.to_csv("data/07_reporting/leaderboard.csv", index=False)
+    fi_df.to_csv("data/07_reporting/feature_importance.csv", index=False)
+
+    return predictor
