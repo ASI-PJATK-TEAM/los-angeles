@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+streamlit
+folium
+streamlit_folium
+geopandas
+shapely
+matplotlib
+autogluon.tabular[all]==1.3.1
+pandas==2.2.3
+numpy==2.2.6
