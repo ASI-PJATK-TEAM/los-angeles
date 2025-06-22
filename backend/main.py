@@ -9,12 +9,10 @@ app = FastAPI()
 local_path = "../kedro/data/06_models/crime_model/"
 prod_path = "./model"
 
-value = os.getenv("ENV", "local")
+env = os.getenv("ENV", "local")
 
-if value == "prod":
-    local_path = prod_path
-
-model = TabularPredictor(local_path)
+model_path = prod_path if env == "prod" else local_path
+model = TabularPredictor.load(model_path)
 
 AREAS = [
     "77th Street", "Central", "Devonshire", "Foothill", "Harbor", "Hollenbeck", "Hollywood",
