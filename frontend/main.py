@@ -221,3 +221,12 @@ if st.session_state.analysis_results:
         st.write(f"- Niskie: ≤ {LOW_THR}")
         st.write(f"- Średnie: {LOW_THR+1}-{MED_THR}")
         st.write(f"- Wysokie: > {MED_THR}")
+
+st.markdown("""
+    <style>
+    iframe {
+        max-height: 600px !important;
+        overflow: hidden !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
