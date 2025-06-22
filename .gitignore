@@ -24,8 +24,7 @@ kedro/data/03_features/*.csv
 kedro/data/04_aggregated/*.csv
 kedro/data/05_model_input/*.csv
 kedro/data/06_models
-kedro/data/07_model_output/*.csv
-kedro/data/08_reporting/*.csv
+kedro/data/07_reporting/*.csv
 
 # Ignore other binary or large files
 *.pkl
